@@ -1,18 +1,4 @@
--- =====================================================================
--- E-COMMERCE SALES & CUSTOMER ANALYTICS  |  SQL ANALYSIS
--- Database : SQLite (works in MySQL/PostgreSQL with minor date changes)
--- Tables   : orders (1 row per order), order_items (1 row per product
---            in an order), products, customers
--- Tip      : "net_sales" = amount charged to the customer (after
---            discount, incl. tax + shipping). "profit" = net_sales
---            - product_cost - shipping_cost.
--- Every query uses only SELECT, WHERE, GROUP BY, ORDER BY, JOIN, CASE.
--- =====================================================================
-
-
--- ---------------------------------------------------------------------
--- SECTION A : DATA UNDERSTANDING & QUALITY CHECKS
--- ---------------------------------------------------------------------
+-- E-Commerce SQL Analysis
 
 -- Q1. How big is each table?
 SELECT 'orders' AS table_name, COUNT(*) AS row_count FROM orders
@@ -31,10 +17,6 @@ SELECT
 FROM orders;
 
 
--- ---------------------------------------------------------------------
--- SECTION B : HEADLINE KPIs
--- ---------------------------------------------------------------------
-
 -- Q3. Overall business KPIs
 SELECT
     COUNT(*)                                         AS total_orders,
@@ -45,6 +27,7 @@ SELECT
     ROUND(AVG(net_sales), 0)                         AS avg_order_value,
     ROUND(AVG(customer_rating), 2)                   AS avg_rating
 FROM orders;
+
 
 -- Q4. What happens to our orders? (Completed / Returned / Cancelled / Pending)
 SELECT
@@ -57,10 +40,6 @@ GROUP BY order_status
 ORDER BY orders DESC;
 
 
--- ---------------------------------------------------------------------
--- SECTION C : SALES TRENDS
--- ---------------------------------------------------------------------
-
 -- Q5. Year-wise revenue, profit and orders
 SELECT
     SUBSTR(order_date, 1, 4)           AS year,
@@ -72,6 +51,7 @@ FROM orders
 GROUP BY SUBSTR(order_date, 1, 4)
 ORDER BY year;
 
+
 -- Q6. Month-wise revenue and profit (for the trend line)
 SELECT
     SUBSTR(order_date, 1, 7)           AS month,
@@ -81,6 +61,7 @@ SELECT
 FROM orders
 GROUP BY SUBSTR(order_date, 1, 7)
 ORDER BY month;
+
 
 -- Q7. Which sales channel performs best?
 SELECT
@@ -94,10 +75,6 @@ GROUP BY sales_channel
 ORDER BY revenue DESC;
 
 
--- ---------------------------------------------------------------------
--- SECTION D : PRODUCT PERFORMANCE   (order_items JOIN products)
--- ---------------------------------------------------------------------
-
 -- Q8. Category performance: revenue, profit and margin
 SELECT
     p.product_category,
@@ -110,6 +87,7 @@ JOIN products p ON oi.product_id = p.product_id
 GROUP BY p.product_category
 ORDER BY revenue DESC;
 
+
 -- Q9. Top 10 brands by profit
 SELECT
     p.brand,
@@ -121,6 +99,7 @@ JOIN products p ON oi.product_id = p.product_id
 GROUP BY p.brand
 ORDER BY profit DESC
 LIMIT 10;
+
 
 -- Q10. Do heavy discounts hurt profit?  (group items into discount bands)
 SELECT
@@ -140,10 +119,6 @@ GROUP BY discount_band
 ORDER BY discount_band;
 
 
--- ---------------------------------------------------------------------
--- SECTION E : CUSTOMER ANALYSIS
--- ---------------------------------------------------------------------
-
 -- Q11. Customer segment performance
 SELECT
     customer_segment,
@@ -156,6 +131,7 @@ FROM orders
 GROUP BY customer_segment
 ORDER BY revenue DESC;
 
+
 -- Q12. Country performance
 SELECT
     customer_country,
@@ -166,6 +142,7 @@ SELECT
 FROM orders
 GROUP BY customer_country
 ORDER BY revenue DESC;
+
 
 -- Q13. Which age group buys the most?
 SELECT
@@ -183,6 +160,7 @@ FROM orders
 GROUP BY age_group
 ORDER BY age_group;
 
+
 -- Q14. Top 10 customers by revenue
 SELECT
     customer_id,
@@ -194,6 +172,7 @@ FROM orders
 GROUP BY customer_id, customer_name, customer_segment
 ORDER BY revenue DESC
 LIMIT 10;
+
 
 -- Q15. How are customers spread by number of orders? (repeat behaviour)
 SELECT
@@ -214,10 +193,6 @@ GROUP BY customer_group
 ORDER BY MIN(order_count);
 
 
--- ---------------------------------------------------------------------
--- SECTION F : MARKETING & PAYMENTS
--- ---------------------------------------------------------------------
-
 -- Q16. Which marketing channel brings the most value?
 SELECT
     marketing_channel,
@@ -229,6 +204,7 @@ FROM orders
 GROUP BY marketing_channel
 ORDER BY revenue DESC;
 
+
 -- Q17. Payment method mix and failure risk
 SELECT
     payment_method,
@@ -239,10 +215,6 @@ FROM orders
 GROUP BY payment_method
 ORDER BY orders DESC;
 
-
--- ---------------------------------------------------------------------
--- SECTION G : DELIVERY, RETURNS & SATISFACTION
--- ---------------------------------------------------------------------
 
 -- Q18. Delivery speed and delays by shipping method (completed orders only)
 SELECT
@@ -256,6 +228,7 @@ WHERE order_status = 'Completed'
 GROUP BY shipping_method
 ORDER BY avg_delivery_days;
 
+
 -- Q19. Does a late delivery lower customer rating?
 SELECT
     delivery_status,
@@ -266,6 +239,7 @@ WHERE order_status = 'Completed'
 GROUP BY delivery_status
 ORDER BY avg_rating DESC;
 
+
 -- Q20. Why do customers return products?
 SELECT
     return_reason,
@@ -275,6 +249,7 @@ FROM orders
 WHERE order_status = 'Returned'
 GROUP BY return_reason
 ORDER BY returned_orders DESC;
+
 
 -- Q21. Lost revenue: cancelled + returned + pending vs completed
 SELECT
