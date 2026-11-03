@@ -4,7 +4,16 @@
 
 An end-to-end analysis of an online retailer's 138,116 orders from 24,911 customers. SQL was used to explore the data, Power BI to build a four-page dashboard, and a written report to turn the results into recommendations.
 
-The business is profitable (43% margin) but revenue has been flat. This project looks at where growth stalls and where profit is lost. The questions it answers are in `Problem_Statement.pdf`.
+The business is profitable (43% margin) but revenue has been flat. This project looks at where growth stalls and where profit is lost. The questions it answers are in the [Problem Statement](04_Problem_Statement/Problem_Statement.pdf).
+
+## Project links
+
+| Deliverable | Open |
+|---|---|
+| Problem statement | [Problem_Statement.pdf](04_Problem_Statement/Problem_Statement.pdf) |
+| SQL analysis (PostgreSQL) | [Ecommerce_SQL_Analysis.sql](02_sql/Ecommerce_SQL_Analysis.sql) |
+| Power BI dashboard | [Business Overview](03_dashboard/01_overview.png), [Sales Trends](03_dashboard/02_sales%20trend.png), [Customers & Marketing](03_dashboard/03_customers%20%26%20marketing.png), [Category & Discount](03_dashboard/04_category%20%26%20discount.png) |
+| Insights report | [Ecommerce_Insights_Report.pdf](05_report/Ecommerce_Insights_Report.pdf) |
 
 ## Key findings
 
@@ -18,18 +27,22 @@ The business is profitable (43% margin) but revenue has been flat. This project 
 
 ## SQL analysis
 
-`Ecommerce_SQL_Analysis.sql` has 21 PostgreSQL queries covering data checks, headline KPIs, sales trends, product and discount performance, customers, marketing and payments, and delivery and returns.
+[`Ecommerce_SQL_Analysis.sql`](02_sql/Ecommerce_SQL_Analysis.sql) has 21 PostgreSQL queries covering data checks, headline KPIs, sales trends, product and discount performance, customers, marketing and payments, and delivery and returns.
 
 ## Dashboard
 
 | Page | Content |
 |---|---|
-| Business Overview | KPIs, order outcome, revenue and profit by year |
-| Sales Trends | Monthly revenue and profit, sales channels, year-over-year summary |
-| Customers & Marketing | Segments, country, marketing channel, rating by delivery outcome |
-| Category & Discount Analysis | Margin and revenue by category, margin by discount band |
+| [Business Overview](03_dashboard/01_overview.png) | KPIs, order outcome, revenue and profit by year |
+| [Sales Trends](03_dashboard/02_sales%20trend.png) | Monthly revenue and profit, sales channels, year-over-year summary |
+| [Customers & Marketing](03_dashboard/03_customers%20%26%20marketing.png) | Segments, country, marketing channel, rating by delivery outcome |
+| [Category & Discount Analysis](03_dashboard/04_category%20%26%20discount.png) | Margin and revenue by category, margin by discount band |
 
 **Data model:** `customer_master` (1) to `orders` (many), `orders` (1) to `order_items` (many), and `product_catalog` (1) to `order_items` (many). Order-level measures use `orders` and product-level measures use `order_items`, since their totals differ by about 8%.
+
+## Report
+
+[`Ecommerce_Insights_Report.pdf`](05_report/Ecommerce_Insights_Report.pdf) walks through the dashboard page by page, explains each finding and ends with a prioritised list of recommendations.
 
 ## Dataset
 
